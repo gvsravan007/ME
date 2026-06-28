@@ -221,6 +221,16 @@ button:hover { background: var(--red-primary); color: var(--bg-primary); box-sha
 #scroll-hint { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: none; flex-direction: column; align-items: center; gap: 8px; z-index: 50; font-family: 'JetBrains Mono', monospace; font-size: 0.6rem; letter-spacing: 3px; color: var(--text-dim); animation: float 3s ease-in-out infinite; }
 .scroll-hint-arrow { width: 16px; height: 16px; border-right: 2px solid var(--text-dim); border-bottom: 2px solid var(--text-dim); transform: rotate(45deg); }
 
+/* ═══════════ UPTIME HUD ═══════════ */
+#uptime-hud {
+  position: fixed; top: 30px; right: 30px; z-index: 50;
+  display: flex; flex-direction: column; align-items: flex-end;
+  font-family: 'JetBrains Mono', monospace; pointer-events: none;
+}
+.uptime-label { font-size: 0.55rem; letter-spacing: 3px; color: var(--text-dim); margin-bottom: 4px; }
+#uptime-counter { font-size: 0.85rem; font-weight: 700; letter-spacing: 2px; color: var(--red-primary); text-shadow: 0 0 12px var(--red-glow); transition: color 0.5s, text-shadow 0.5s; }
+
+
 @keyframes spin { to { transform: rotate(360deg); } }
 @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
 @keyframes dots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }

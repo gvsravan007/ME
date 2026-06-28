@@ -67,9 +67,38 @@
     });
 
     window.addEventListener('click', onCanvasClick);
+    initUptimeCounter();
   });
 
   function msg(id, txt, cls) { $(id).textContent = txt; $(id).className = 'gate-message ' + cls; }
+
+  function initUptimeCounter() {
+    const startDate = new Date('2006-01-01T00:00:00');
+    function update() {
+      const now = new Date();
+      let diff = Math.floor((now - startDate) / 1000);
+      if(isNaN(diff) || diff < 0) diff = 0;
+      
+      const years = Math.floor(diff / (365.25 * 24 * 3600));
+      diff -= Math.floor(years * 365.25 * 24 * 3600);
+      
+      const days = Math.floor(diff / (24 * 3600));
+      diff -= days * 24 * 3600;
+      
+      const hours = Math.floor(diff / 3600);
+      diff -= hours * 3600;
+      
+      const mins = Math.floor(diff / 60);
+      const secs = diff % 60;
+      
+      const el = $('uptime-counter');
+      if(el) {
+        el.textContent = `${years}Y ${String(days).padStart(3, '0')}D ${String(hours).padStart(2, '0')}H ${String(mins).padStart(2, '0')}M ${String(secs).padStart(2, '0')}S`;
+      }
+    }
+    update();
+    setInterval(update, 1000);
+  }
 
   async function aegisAuth() {
     const pw = $('password-input').value.trim();
@@ -334,24 +363,57 @@
       $('scroll-progress-dot').style.background = 'var(--green-primary)';
       $('scroll-progress-dot').style.boxShadow = '0 0 12px var(--green-glow-strong)';
       $('return-aegis-btn').style.display = 'block';
+      if($('uptime-counter')) {
+        $('uptime-counter').style.color = 'var(--green-primary)';
+        $('uptime-counter').style.textShadow = '0 0 12px var(--green-glow)';
+      }
     } else {
       $('scroll-progress-fill').style.background = '';
       $('scroll-progress-fill').style.boxShadow = '';
       $('scroll-progress-dot').style.background = '';
       $('scroll-progress-dot').style.boxShadow = '';
       $('return-aegis-btn').style.display = 'none';
+      if($('uptime-counter')) {
+        $('uptime-counter').style.color = '';
+        $('uptime-counter').style.textShadow = '';
+      }
     }
 
     $('return-aegis-btn').onclick = () => {
       window.scrollTo({ top: 0.4 * getH(), behavior: 'smooth' });
     };
 
+    updatePanelVisibility();
+  }
+
+  function updatePanelVisibility() {
+    const aegisN = (S.aegisData && Array.isArray(S.aegisData)) ? S.aegisData.length : 1;
+    const animaN = (S.animaData && Array.isArray(S.animaData)) ? S.animaData.length : 1;
+    const stepAegis = aegisN > 1 ? 0.35 / (aegisN - 1) : 0.2;
+    const stepAnima = animaN > 1 ? 0.35 / (animaN - 1) : 0.2;
+
     SECTIONS.forEach(sec => {
       const p = $('panel-' + sec.id);
       if(!p) return;
+
+      const isAegis = sec.id.startsWith('s-');
+      const isAnima = sec.id.startsWith('v-');
+
+      // Strict Zone Filter: hide Aegis panels in Zone 2, hide Anima panels in Zone 1
+      if ((S.currentZone === 1 && !isAegis) || (S.currentZone === 2 && !isAnima)) {
+        p.classList.remove('visible');
+        return;
+      }
+
+      const step = isAegis ? stepAegis : stepAnima;
+      const threshold = Math.min(0.045, step * 0.42);
       const dist = Math.abs(S.scroll - sec.t);
-      if(dist < 0.08) p.classList.add('visible');
-      else p.classList.remove('visible');
+
+      if (dist < threshold) {
+        p.classList.add('visible');
+      } else {
+        p.classList.remove('visible');
+      }
     });
   }
 
@@ -437,6 +499,7 @@
       onComplete: () => {
         S.warpActive = false;
         S.currentZone = zoneId;
+        updatePanelVisibility();
         if(zoneId === 2) {
           S.scene.fog.color.setHex(0x011a10);
           S.renderer.setClearColor(0x011a10);
@@ -454,6 +517,7 @@
     // Teleport at peak flash
     tl.call(() => {
       S.currentZone = zoneId;
+      updatePanelVisibility();
       // FORCE SNAP CAMERA POSITION so it doesn't lerp across the universe
       let localProg = 0;
       let path = null;
