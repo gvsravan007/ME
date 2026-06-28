@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="IDENT.SYS — Classified Neural Archive">
+  <meta name="robots" content="noindex, nofollow">
+  <title>IDENT.SYS // NEURAL ARCHIVE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- PRELOADER -->
+  <div id="loader">
+    <div class="loader-geometry">
+      <div class="loader-ring"></div>
+      <div class="loader-ring ring-2"></div>
+      <div class="loader-ring ring-3"></div>
+      <div class="loader-core"></div>
+    </div>
+    <p class="loader-text">INITIALIZING NEURAL INTERFACE<span class="loader-dots"></span></p>
+  </div>
+
+  <!-- MAIN SRAVAN GATE -->
+  <div id="password-gate" style="display:none;">
+    <div class="scanline-overlay"></div>
+    <div class="gate-container">
+      <div class="terminal-header">
+        <h1 class="clean-title">IDENT.SYS</h1>
+        <p class="terminal-subtitle">ENCRYPTED NEURAL ARCHIVE</p>
+        <p class="terminal-status">[SYSTEM] Awaiting authentication credentials...</p>
+      </div>
+      <div class="terminal-input-area">
+        <div class="input-row">
+          <span class="prompt-symbol">root@ident:~$</span>
+          <input type="password" id="password-input" placeholder="ENTER PASSKEY" autocomplete="off" spellcheck="false">
+          <span class="cursor-blink">█</span>
+        </div>
+        <button id="submit-btn" type="button">[ AUTHENTICATE ]</button>
+      </div>
+      <div id="gate-message" class="gate-message"></div>
+      <div class="terminal-footer">
+        <span>AES-256-GCM</span>
+        <span id="attempt-counter">ATTEMPTS: 0/5</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CINEMATIC INTRO -->
+  <div id="cinematic-intro" style="display:none;">
+    <p id="intro-line" class="intro-line"></p>
+    <div class="intro-progress">
+      <div class="intro-progress-bar" id="intro-progress-bar"></div>
+    </div>
+  </div>
+
+  <!-- THREE.JS CANVAS -->
+  <canvas id="three-canvas"></canvas>
+
+  <!-- WARP OVERLAY -->
+  <div id="warp-overlay"></div>
+
+  <!-- SCROLL SPACER -->
+  <div id="scroll-spacer"></div>
+
+  <!-- CONTENT OVERLAY (Glassmorphism panels injected here) -->
+  <div id="content-overlay"></div>
+
+  <!-- VENKY AUTH GATE -->
+  <div id="anima-gate" style="display:none;">
+    <div class="anima-gate-inner">
+      <div class="anima-gate-header">
+        <div class="anima-shield-icon">🛡️</div>
+        <h2 class="anima-gate-title">PROTECTED SECTOR</h2>
+        <p class="anima-gate-subtitle">AEGIS PROTOCOL ACTIVE</p>
+        <p class="anima-gate-desc">What lies beyond is guarded. Not everyone gets to see this side.<br>If you're meant to be here, you already know the key.</p>
+      </div>
+      <div class="terminal-input-area">
+        <div class="input-row anima-input-row">
+          <span class="prompt-symbol anima-prompt">anima:~$</span>
+          <input type="password" id="anima-password-input" placeholder="SECONDARY PASSKEY" autocomplete="off" spellcheck="false">
+        </div>
+        <button id="anima-submit-btn" type="button">[ UNLOCK ANIMA PROTOCOL ]</button>
+      </div>
+      <div id="anima-gate-message" class="gate-message"></div>
+      <button id="anima-skip-btn" class="anima-skip">RETURN TO AEGIS WORLD ↑</button>
+    </div>
+  </div>
+
+  <!-- PEOPLE LOGIN ROUTE (FULL SCREEN) -->
+  <div id="people-login-route" style="display:none;">
+    <div class="scanline-overlay"></div>
+    <button id="people-back-btn" class="nav-back-btn">← BACK TO SECTOR GREEN</button>
+    
+    <!-- Step 1: Login -->
+    <div class="gate-container people-auth-box" id="people-auth-box">
+      <div class="terminal-header">
+        <h2 class="anima-gate-title" style="color: #ff00cc; text-shadow: 0 0 20px rgba(255,0,204,0.5);">PEOPLE</h2>
+        <p class="terminal-subtitle">INDIVIDUAL FREQUENCY LOCK</p>
+      </div>
+      <div class="terminal-input-area">
+        <div class="input-row pink-input-row">
+          <span class="prompt-symbol pink-prompt">ID:</span>
+          <input type="text" id="person-name-input" placeholder="NAME" autocomplete="off" spellcheck="false">
+        </div>
+        <div class="input-row pink-input-row">
+          <span class="prompt-symbol pink-prompt">KEY:</span>
+          <input type="password" id="person-key-input" placeholder="PERSONAL KEY" autocomplete="off" spellcheck="false">
+        </div>
+        <button id="person-submit-btn" class="pink-submit-btn" type="button">[ DECRYPT FREQUENCY ]</button>
+      </div>
+      <div id="person-gate-message" class="gate-message"></div>
+    </div>
+
+    <!-- Step 2: Decrypted Profile -->
+    <div id="decrypted-profile-container" style="display:none;" class="decrypted-profile-container">
+      <!-- Injected by JS -->
+    </div>
+  </div>
+
+  <!-- BACK TO AEGIS BUTTON (Visible in Anima Zone) -->
+  <button id="return-aegis-btn" class="nav-back-btn" style="display:none; position:fixed; top:30px; left:30px; z-index:50;">
+    ↑ JUMP BACK TO AEGIS
+  </button>
+
+  <!-- SCROLL PROGRESS & HINT -->
+  <div id="scroll-progress">
+    <div id="scroll-progress-fill"></div>
+    <div id="scroll-progress-dot"></div>
+  </div>
+  <div id="section-label"></div>
+
+  <div id="scroll-hint">
+    <div class="scroll-hint-arrow"></div>
+    <span>SCROLL TO NAVIGATE</span>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="data.js"></script>
+  <script src="app.js" defer></script>
+</body>
+</html>

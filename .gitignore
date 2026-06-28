@@ -1,0 +1,10 @@
+# Ignore unencrypted raw text and secrets
+content/
+
+# Ignore python cache
+__pycache__/
+*.pyc
+
+# System files
+.DS_Store
+Thumbs.db
