@@ -16,12 +16,12 @@ def encrypt_payload(data_dict, password):
     salt = os.urandom(16)
     iv = os.urandom(12)
 
-    # Derive key (PBKDF2 with SHA256, 200,000 iterations, 32 bytes/256 bits output)
+    # Derive key (PBKDF2 with SHA256, 600,000 iterations, 32 bytes/256 bits output)
     kdf = PBKDF2HMAC(
         algorithm=hashes.SHA256(),
         length=32,
         salt=salt,
-        iterations=200000,
+        iterations=600000,
     )
     key = kdf.derive(password_bytes)
 

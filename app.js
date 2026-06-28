@@ -27,7 +27,7 @@
 
   async function deriveKey(password, salt) {
     const keyMat = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveKey']);
-    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' }, keyMat, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 600000, hash: 'SHA-256' }, keyMat, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
   }
   
   async function decrypt(b64, pw) {
@@ -297,11 +297,13 @@
   const getH = () => document.documentElement.scrollHeight - window.innerHeight;
 
   function onScroll() {
-    if(S.warpActive || $('people-login-route').style.display === 'flex') return;
+    if($('people-login-route').style.display === 'flex') return;
     $('scroll-hint').style.display = 'none';
     
     const raw = window.scrollY / getH();
     S.scroll = Math.min(raw, S.maxScroll);
+
+    if(S.warpActive) return;
 
     // GATE BLOCKER
     if (raw > S.maxScroll + 0.01 && !S.animaUnlocked) {
@@ -380,7 +382,7 @@
   }
 
   // ═══════════════════════════════════════════════════════════════════════
-  // VENKY WARP & RAYCASTING
+  // ANIMA WARP & RAYCASTING
   // ═══════════════════════════════════════════════════════════════════════
 
   async function animaAuth() {
@@ -452,7 +454,19 @@
     // Teleport at peak flash
     tl.call(() => {
       S.currentZone = zoneId;
-      // The animate loop will immediately snap cam position because currentZone changed
+      // FORCE SNAP CAMERA POSITION so it doesn't lerp across the universe
+      let localProg = 0;
+      let path = null;
+      if(zoneId === 1) {
+         localProg = S.scroll / 0.5;
+         path = S.aegisPath;
+      } else {
+         localProg = (S.scroll - 0.5) / 0.5;
+         path = S.animaPath;
+      }
+      localProg = Math.max(0, Math.min(localProg, 0.999));
+      const pt = path.getPointAt(localProg);
+      S.cam.position.set(pt.x + S.mx*10, pt.y - S.my*10, pt.z);
     }, null, 1.4);
 
     tl.to(S.starMat.uniforms.warpSpeed, { value: 0.0, duration: 1.5, ease: "power3.out" }, 1.5);
@@ -499,7 +513,7 @@
   $('person-key-input').addEventListener('keydown', e => { if(e.key === 'Enter') tryDecryptPerson(); });
 
   async function tryDecryptPerson() {
-    const name = $('person-name-input').value.trim().toLowerCase();
+    const name = $('person-name-input').value.trim();
     const key = $('person-key-input').value.trim();
     if(!name || !key) return;
     
