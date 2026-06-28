@@ -73,7 +73,7 @@
   function msg(id, txt, cls) { $(id).textContent = txt; $(id).className = 'gate-message ' + cls; }
 
   function initUptimeCounter() {
-    const startDate = new Date('2006-01-01T00:00:00');
+    const startDate = new Date(1152772200 * 1000);
     function update() {
       const now = new Date();
       let diff = Math.floor((now - startDate) / 1000);
