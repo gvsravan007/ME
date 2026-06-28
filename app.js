@@ -130,8 +130,8 @@
     
     const steps = [
       { t: 'IDENTITY VERIFIED', d: 1000 },
-      { t: 'GENERATING 3D ENVIRONMENT', d: 1000 },
-      { t: 'WELCOME BACK, OPERATOR', d: 1000 },
+      { t: 'ESTABLISHING NEURAL LINK', d: 1000 },
+      { t: 'WELCOME BACK, ORDINATOR', d: 1000 },
     ];
     for (const s of steps) {
       $('intro-line').textContent = s.t;
@@ -363,20 +363,12 @@
       $('scroll-progress-dot').style.background = 'var(--green-primary)';
       $('scroll-progress-dot').style.boxShadow = '0 0 12px var(--green-glow-strong)';
       $('return-aegis-btn').style.display = 'block';
-      if($('uptime-counter')) {
-        $('uptime-counter').style.color = 'var(--green-primary)';
-        $('uptime-counter').style.textShadow = '0 0 12px var(--green-glow)';
-      }
     } else {
       $('scroll-progress-fill').style.background = '';
       $('scroll-progress-fill').style.boxShadow = '';
       $('scroll-progress-dot').style.background = '';
       $('scroll-progress-dot').style.boxShadow = '';
       $('return-aegis-btn').style.display = 'none';
-      if($('uptime-counter')) {
-        $('uptime-counter').style.color = '';
-        $('uptime-counter').style.textShadow = '';
-      }
     }
 
     $('return-aegis-btn').onclick = () => {
@@ -422,8 +414,11 @@
     if(S.aegisData && Array.isArray(S.aegisData)) {
       S.aegisData.forEach((data, i) => {
         let extra = '';
+        if(data.showUptime) {
+           extra += `<div class="panel-uptime-box"><span class="uptime-label">SYSTEM UPTIME // ORDINATOR CHRONO</span><div id="uptime-counter">00Y 000D 00H 00M 00S</div></div>`;
+        }
         if(data.quotes) {
-           extra = data.quotes.map(q => `<div class="panel-quote red">${q.text}<div class="panel-quote-attr">${q.attr}</div></div>`).join('');
+           extra += data.quotes.map(q => `<div class="panel-quote red">${q.text}<div class="panel-quote-attr">${q.attr}</div></div>`).join('');
         }
         html.push(makePanel('s-' + i, 'red', data, extra));
       });
