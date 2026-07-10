@@ -68,9 +68,45 @@
 
     window.addEventListener('click', onCanvasClick);
     initUptimeCounter();
+    initCursors();
   });
 
   function msg(id, txt, cls) { $(id).textContent = txt; $(id).className = 'gate-message ' + cls; }
+
+  function initCursors() {
+    const inputs = [
+      { input: $('password-input'), cursor: $('password-cursor') },
+      { input: $('anima-password-input'), cursor: $('anima-cursor') },
+      { input: $('person-name-input'), cursor: $('person-name-cursor') },
+      { input: $('person-key-input'), cursor: $('person-key-cursor') }
+    ];
+
+    inputs.forEach(({ input, cursor }) => {
+      if (!input) return;
+      const update = () => {
+        input.parentElement.style.setProperty('--char-count', input.value.length);
+      };
+      input.addEventListener('input', update);
+      ['focus', 'blur', 'change', 'keyup', 'paste', 'cut'].forEach(evt => {
+        input.addEventListener(evt, update);
+      });
+      update();
+    });
+  }
+
+  function updateCursors() {
+    const inputs = [
+      $('password-input'),
+      $('anima-password-input'),
+      $('person-name-input'),
+      $('person-key-input')
+    ];
+    inputs.forEach(input => {
+      if (input && input.parentElement) {
+        input.parentElement.style.setProperty('--char-count', input.value.length);
+      }
+    });
+  }
 
   function initUptimeCounter() {
     const startDate = new Date(1152772200 * 1000);
@@ -533,8 +569,14 @@
     tl.to(overlay, { opacity: 0, duration: 1.5 }, 1.5);
   }
 
-  function onCanvasClick() {
+  function onCanvasClick(e) {
     if(S.currentZone !== 2 || S.warpActive) return;
+    
+    if (e) {
+      S.mx = (e.clientX / window.innerWidth) * 2 - 1;
+      S.my = (e.clientY / window.innerHeight) * 2 - 1;
+      S.mouse.x = S.mx; S.mouse.y = -S.my;
+    }
     
     S.raycaster.setFromCamera(S.mouse, S.cam);
     const intersects = S.raycaster.intersectObject(S.pinkAnomaly, true);
@@ -559,6 +601,7 @@
     $('person-name-input').value = '';
     $('person-key-input').value = '';
     msg('person-gate-message', '', 'info');
+    updateCursors();
   }
 
   $('people-back-btn').addEventListener('click', () => {

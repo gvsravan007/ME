@@ -91,12 +91,35 @@ body {
 .input-row:focus-within { border-color: var(--red-primary); box-shadow: 0 0 20px var(--red-glow); }
 .prompt-symbol { font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--red-primary); white-space: nowrap; flex-shrink: 0; }
 input {
-  flex: 1; background: transparent; border: none; outline: none;
+  width: 100%; background: transparent; border: none; outline: none;
   font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--text-primary);
-  letter-spacing: 4px; caret-color: var(--red-primary);
+  letter-spacing: 4px; caret-color: transparent;
+  padding: 0; margin: 0;
 }
 input::placeholder { color: var(--text-dim); letter-spacing: 2px; }
-.cursor-blink { color: var(--red-primary); font-family: 'JetBrains Mono', monospace; animation: blink 1s steps(1) infinite; }
+input:focus::placeholder { color: transparent; }
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+.input-wrapper .cursor-blink {
+  position: absolute;
+  left: calc(var(--char-count, 0) * (1ch + 4px));
+  pointer-events: none;
+  color: var(--red-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem;
+  animation: blink 1s steps(1) infinite;
+  display: none;
+}
+.input-wrapper:focus-within .cursor-blink {
+  display: inline;
+}
+.anima-input-row .cursor-blink { color: var(--green-primary); }
+.pink-input-row .cursor-blink { color: var(--pink-primary); }
 button {
   width: 100%; padding: 14px; background: transparent;
   border: 1px solid var(--red-primary); color: var(--red-primary);
@@ -176,7 +199,7 @@ button:hover { background: var(--red-primary); color: var(--bg-primary); box-sha
 .anima-gate-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 24px; }
 .anima-input-row:focus-within { border-color: var(--green-primary); box-shadow: 0 0 20px var(--green-glow); }
 .anima-prompt { color: var(--green-primary); }
-#anima-password-input { caret-color: var(--green-primary); }
+#anima-password-input { caret-color: transparent; }
 #anima-submit-btn { border-color: var(--green-primary); color: var(--green-primary); }
 #anima-submit-btn:hover { background: var(--green-primary); color: var(--bg-primary); box-shadow: 0 0 30px var(--green-glow); }
 .anima-skip { display: block; width: 100%; margin-top: 14px; padding: 10px; background: transparent; border: 1px solid rgba(255,255,255,0.06); color: var(--text-dim); cursor: pointer; }
@@ -190,7 +213,7 @@ button:hover { background: var(--red-primary); color: var(--bg-primary); box-sha
 .people-auth-box { border-color: rgba(255,0,204,0.3); box-shadow: 0 0 60px rgba(255,0,204,0.1); }
 .pink-input-row:focus-within { border-color: var(--pink-primary); box-shadow: 0 0 20px var(--pink-glow); }
 .pink-prompt { color: var(--pink-primary); }
-#person-name-input, #person-key-input { caret-color: var(--pink-primary); }
+#person-name-input, #person-key-input { caret-color: transparent; }
 .pink-submit-btn { border-color: var(--pink-primary); color: var(--pink-primary); }
 .pink-submit-btn:hover { background: var(--pink-primary); color: var(--bg-primary); box-shadow: 0 0 30px var(--pink-glow); }
 
@@ -242,3 +265,26 @@ button:hover { background: var(--red-primary); color: var(--bg-primary); box-sha
 @keyframes glitch { 0% { transform: translate(0); } 20% { transform: translate(-3px, 2px); } 40% { transform: translate(3px, -2px); } 60% { transform: translate(-2px,-1px); } 80% { transform: translate(2px,1px); } 100% { transform: translate(0); } }
 @keyframes shake { 0%,100% { transform: translateX(0); } 10%,30%,50%,70%,90% { transform: translateX(-6px); } 20%,40%,60%,80% { transform: translateX(6px); } }
 @keyframes float { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+
+/* Responsive Design (Mobile Friendliness) */
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+  .gate-container { padding: 30px 20px; }
+  .anima-gate-inner { padding: 30px 20px; }
+  .decrypted-profile-container { padding: 30px 20px; }
+  .clean-title { font-size: 2.2rem; letter-spacing: 4px; }
+  .profile-name { font-size: 2rem; }
+  .content-panel { padding: 30px 25px; }
+}
+
+@media (max-width: 480px) {
+  html { font-size: 13px; }
+  .gate-container { padding: 20px 15px; }
+  .anima-gate-inner { padding: 20px 15px; }
+  .decrypted-profile-container { padding: 20px 15px; }
+  .clean-title { font-size: 1.8rem; letter-spacing: 2px; }
+  .profile-name { font-size: 1.6rem; }
+  .content-panel { padding: 25px 15px; width: 92%; }
+  .nav-back-btn { top: 15px; left: 15px; padding: 6px 12px; }
+  #return-aegis-btn { top: 15px; left: 15px; padding: 6px 12px; }
+}

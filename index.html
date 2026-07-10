@@ -36,8 +36,10 @@
       <div class="terminal-input-area">
         <div class="input-row">
           <span class="prompt-symbol">ordinator@ident:~$</span>
-          <input type="password" id="password-input" placeholder="ENTER PASSKEY" autocomplete="off" spellcheck="false">
-          <span class="cursor-blink">█</span>
+          <div class="input-wrapper">
+            <input type="password" id="password-input" placeholder="ENTER PASSKEY" autocomplete="off" spellcheck="false">
+            <span class="cursor-blink" id="password-cursor">█</span>
+          </div>
         </div>
         <button id="submit-btn" type="button">[ AUTHENTICATE ]</button>
       </div>
@@ -81,7 +83,10 @@
       <div class="terminal-input-area">
         <div class="input-row anima-input-row">
           <span class="prompt-symbol anima-prompt">anima:~$</span>
-          <input type="password" id="anima-password-input" placeholder="SECONDARY PASSKEY" autocomplete="off" spellcheck="false">
+          <div class="input-wrapper">
+            <input type="password" id="anima-password-input" placeholder="SECONDARY PASSKEY" autocomplete="off" spellcheck="false">
+            <span class="cursor-blink" id="anima-cursor">█</span>
+          </div>
         </div>
         <button id="anima-submit-btn" type="button">[ UNLOCK ANIMA PROTOCOL ]</button>
       </div>
@@ -104,11 +109,17 @@
       <div class="terminal-input-area">
         <div class="input-row pink-input-row">
           <span class="prompt-symbol pink-prompt">ID:</span>
-          <input type="text" id="person-name-input" placeholder="NAME" autocomplete="off" spellcheck="false">
+          <div class="input-wrapper">
+            <input type="text" id="person-name-input" placeholder="NAME" autocomplete="off" spellcheck="false">
+            <span class="cursor-blink" id="person-name-cursor">█</span>
+          </div>
         </div>
         <div class="input-row pink-input-row">
           <span class="prompt-symbol pink-prompt">KEY:</span>
-          <input type="password" id="person-key-input" placeholder="PERSONAL KEY" autocomplete="off" spellcheck="false">
+          <div class="input-wrapper">
+            <input type="password" id="person-key-input" placeholder="PERSONAL KEY" autocomplete="off" spellcheck="false">
+            <span class="cursor-blink" id="person-key-cursor">█</span>
+          </div>
         </div>
         <button id="person-submit-btn" class="pink-submit-btn" type="button">[ DECRYPT FREQUENCY ]</button>
       </div>
