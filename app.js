@@ -268,7 +268,7 @@
     const anomalyGeo = new THREE.IcosahedronGeometry(25, 2);
     const anomalyMat = new THREE.MeshBasicMaterial({ color: 0xff00cc, wireframe: true, transparent: true, opacity: 0.8 });
     S.pinkAnomaly = new THREE.Mesh(anomalyGeo, anomalyMat);
-    S.pinkAnomaly.position.set(90, 15, -5700); // Positioned halfway through Anima's zone, off to the side
+    S.pinkAnomaly.position.set(-20, 45, -5700); // Positioned directly over the travel path
     S.scene.add(S.pinkAnomaly);
     
     // Anomaly Core Glow
